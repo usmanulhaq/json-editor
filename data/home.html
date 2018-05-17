@@ -1,0 +1,32 @@
+<div>
+<h2>This is a simple javascript function to convert a json array to an html table</h2>
+<p>
+    json array should be in a below format</p>
+<code>
+    [{&#39;key1&#39;:&#39;value1_A&#39;, &#39;key2&#39;:&#39;value2_A&#39;},{&#39;key1&#39;:&#39;value1_B&#39;, &#39;key2&#39;:&#39;value2_B&#39; },{&#39;key1&#39;:&#39;value1_C&#39;, &#39;key2&#39;:&#39;value2_C&#39; }]</p>
+</code>
+<p>
+    This is an array of javascript object and each object is a list of key &amp; value pairs</p>
+<h2>Some feature of the code</h2>
+<ul>
+    <li>You can have many different types of keys in each object and can have diferent types of values as well. </li>
+    <li>A value can be an objects as well. In this case the created table will have a child table in place of value.</li>
+</ul>
+<h2>How to use</h2>
+<p>
+    After including the javascript file in you code just call the below function</p>
+<p>
+<code>
+    makeTable(obj_for_table);
+</code>
+</p>
+    obj_for_table is a variable containing the array of abjects.</p>
+<p>
+    It will return a string having the html of the table, you can display it as below in your page</p>
+<p>
+<code>
+    $('#table_container').html(makeTable(json_arr));
+</code>
+</p>
+
+</div>

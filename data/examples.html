@@ -1,0 +1,39 @@
+<div>
+    <div class = "border m-3 p-3">
+        <h3>Json</h3>
+        <pre>
+            <code>
+                    [
+                    {"id":1, "name":"name1"},
+                    {"id":2, "name":"name2", "salary":2000},
+                    {"id":3, "name":"name3"},
+                    {"id":4, "name":"name4", "bonus":3000},
+                    {"id":5, "name":"name5", "salary":{"basic":2000, "extra":"500"}},
+                    {"id":6, "name":"name6", "bonus":[{"quarter":1, "first":1000, "second":"500"},{"quarter":2, "first":1000, "second":"500"}]}
+                    ]
+            </code>
+        </pre>
+        
+        <h3>Table</h3>
+        <div id="table_container" class="col-md-12"><table class="json_table table table-bordered table-striped table-hover table-sm" id="json_table_1"><thead class="thead-dark"><tr><th>id</th><th>name</th><th>salary</th><th>bonus</th></tr></thead><tbody><tr><td>1</td><td>name1</td><td></td><td></td></tr><tr><td>2</td><td>name2</td><td>2000</td><td></td></tr><tr><td>3</td><td>name3</td><td></td><td></td></tr><tr><td>4</td><td>name4</td><td></td><td>3000</td></tr><tr><td>5</td><td>name5</td><td><table class="json_table table table-bordered table-striped table-hover table-sm" id="json_table_2"><thead class="thead-dark"><tr><th>basic</th><th>extra</th></tr></thead><tbody><tr><td>2000</td><td>500</td></tr></tbody></table></td><td></td></tr><tr><td>6</td><td>name6</td><td></td><td><table class="json_table table table-bordered table-striped table-hover table-sm" id="json_table_3"><thead class="thead-dark"><tr><th>quarter</th><th>first</th><th>second</th></tr></thead><tbody><tr><td>1</td><td>1000</td><td>500</td></tr><tr><td>2</td><td>1000</td><td>500</td></tr></tbody></table></td></tr></tbody></table></div>
+    </div>
+
+    <div class = "border p-3 m-3">
+        <h3>Json</h3>
+        <pre>
+            <code>
+    [
+    {"id":1, "name":"name1"},
+    {"id":2, "name":"name2"},
+    {"id":3, "name":"name3"}
+    ]
+            </code>
+        </pre>
+        
+        <h3>Table</h3>
+        <table class="json_table table table-bordered table-striped table-hover table-sm" id="json_table_1"><thead class="thead-dark"><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>name1</td></tr><tr><td>2</td><td>name2</td></tr><tr><td>3</td><td>name3</td></tr></tbody></table>
+    </div> 
+
+
+
+</div>

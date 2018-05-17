@@ -1,0 +1,78 @@
+<div>
+<h1>How to use</h1>
+<h2>Requirements</h2>
+<ol>
+    <li>Jquery</li>
+    <li>Some table styling css</li>
+    <li>json_to_table.js file</li>
+    <li>some sample data</li>
+    <li>A file to link this all togather and show the result</li>
+</ol>
+<h2>json input asumptions</h2>
+<p>
+    The input requirement of the fucntion is an array of javascript objects. i.e in a format like below</p>
+    <code>
+        [{&#39;key1&#39;:&#39;value1_A&#39;, &#39;key2&#39;:&#39;value2_A&#39;},{&#39;key1&#39;:&#39;value1_B&#39;, &#39;key2&#39;:&#39;value2_B&#39; },{&#39;key1&#39;:&#39;value1_C&#39;, &#39;key2&#39;:&#39;value2_C&#39; }]</p>
+    </code>
+
+    the value can be an of type string, number and an object as well, if it is object another table will be created inside the parent table cell.</p>
+<p>
+    the keys can be different in all objethe keys can be different in all objects. if a new key is detected, a new column will be created in the table.</p>
+
+    <h2>Simple example code</h2>
+<pre>
+    <code>
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;script src="https://code.jquery.com/jquery-3.3.1.min.js"&gt;&lt;/script&gt;
+            &lt;script src="./js/jsontotable.js"&gt;&lt;/script&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;div id='d1'&gt;&lt;/div&gt;
+            &lt;script&gt;
+                var json_arr = [
+                                {'id':1, 'name':'name1'},
+                                {'id':2, 'name':'name2', 'salary':2000},
+                                {'id':3, 'name':'name3'},
+                                {'id':4, 'name':'name4', 'bonus':300},
+                                {'id':5, 'name':'name5', 'salary':{'basic':2000, 'extra':'500'}},
+                                {'id':6, 'name':'name6', 'bonus':{'first':100, 'second':'200'}}
+                                ];
+                $(document).ready(function () {
+                    $('#d1').append(makeTable(json_arr));
+                });
+            &lt;/script&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+    </code>
+</pre> 
+<h2>Code Description</h2>
+<h2>Variables:</h2>
+<p>
+    <strong>json_array: </strong> Array of objects, each object contains a combination of keys and values. We shall create an html table with values as data and keys as headers of the table.
+</p>
+<p>
+    <strong>header_names: </strong> An array of objects having headers as keys and the place/index of their columns in the table as value.
+</p>
+<p>
+    <strong>html_table:</strong> A string that we shall build, it will create an html of the final table we are creating.
+</p>
+<h2>Code logic</h2>
+<pre>
+    <code>
+    for each object in array 
+        for each element in the object 
+            if the element is a json object 
+                make table of the object and insert in parent table 
+            else
+                check the key/header of the element if it is available in header_names array
+                    if yes: insert the value in the table string html_table trough jquery at the defined column number in first row 
+                    if not: insert a new column in the table string then insert the key name as header of that column, and the value in the row and define its column number and header name in the column index array header_names.
+            end if
+            move to next row in the table.
+        end foreach
+    end foreach
+    finalize the table string and return it. 
+    </code>
+</pre>
+</div>

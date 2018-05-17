@@ -1,0 +1,56 @@
+<div>
+
+    <div class="row mt-3">
+        <div id='input_container' class='col-md-12'>
+            <label for="Textarea1">Enter a json array of objects</label>
+            <textarea class="form-control" id="Textarea1" rows="8">
+[
+{"id":1, "name":"name1"},
+{"id":2, "name":"name2", "salary":2000},
+{"id":3, "name":"name3"},
+{"id":4, "name":"name4", "bonus":3000},
+{"id":5, "name":"name5", "salary":{"basic":2000, "extra":"500"}},
+{"id":6, "name":"name6", "bonus":[{"quarter":1, "first":1000, "second":"500"},{"quarter":2, "first":1000, "second":"500"}]}
+]
+            </textarea>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+            <div class='col-md-4'></div>
+            <div id='button_container' class='col-md-3'>
+                    <button id='convert_button' type="button" class="btn btn-default btn-lg btn-block">Convert</button>
+            </div>
+        </div>
+
+    <div class="row mt-3">
+        <div id='table_container' class='col-md-12'></div>
+    </div>
+
+
+    <script src="../js/jsontotable.js"></script>
+    
+    <script>
+
+        $(document).ready(function () {
+            $('#convert_button').on('click', function(){
+
+
+                try {
+                    json_arr = JSON.parse($('#Textarea1').val());
+                } catch(e) {
+                    alert(e);
+                    return;
+                }
+
+                $('#table_container').html(makeTable(json_arr));
+                $('.json_table').addClass('table table-bordered table-striped table-hover table-sm');
+                $('.json_table thead').addClass('thead-dark');
+
+            });
+
+        });
+
+    </script>
+
+</div>

@@ -1,0 +1,129 @@
+<html>
+<head>
+        <title>Demo</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link href="../css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+    
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <span class="navbar-brand">json to table</span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a id="link_home" class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a id="link_doc" class="nav-link" href="doc.html">Documentation <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a id="link_examples" class="nav-link" href="examples.html">Examples <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a id="link_demo" class="nav-link" href="demo.html">Demo <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a id="link_download" class="nav-link" href="download.html">Download <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a id="link_about" class="nav-link" href="about.html">About <span class="sr-only">(current)</span></a>
+                </li>
+
+            </ul>
+            
+        </div>
+    </nav>
+
+
+    <main role="main" class="container">
+            <div class="content">
+              <p id="body_content">
+                  </p>
+
+    <div id="result"></div>
+
+    <div class="row mt-3">
+        <div id="input_container" class="col-md-12">
+            <label for="Textarea1">Enter a json array of objects</label>
+            <textarea class="form-control" id="Textarea1" rows="8">[
+{"id":1, "name":"name1"},
+{"id":2, "name":"name2", "salary":2000},
+{"id":3, "name":"name3"},
+{"id":4, "name":"name4", "bonus":3000},
+{"id":5, "name":"name5", "salary":{"basic":2000, "extra":"500"}},
+{"id":6, "name":"name6", "bonus":[{"quarter":1, "first":1000, "second":"500"},{"quarter":2, "first":1000, "second":"500"}]}
+]
+            </textarea>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+            <div class="col-md-4"></div>
+            <div id="button_container" class="col-md-3">
+                    <button id="convert_button" type="button" class="btn btn-default btn-lg btn-block">Convert</button>
+                    <button id="convert2_button" type="button" class="btn btn-default btn-lg btn-block">Convert2</button>
+            </div>
+        </div>
+
+    <div class="row mt-3">
+        <div id="table_container" class="col-md-12"></div>
+    </div>
+
+
+    
+
+
+              <p></p>
+            </div>
+        </main>
+
+    
+
+<footer class="blog-footer">
+    <p class="text-right"> Based on a bootstrap Template by Usman ul haq</p>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="../js/jsontotable.js"></script>
+    
+    <script>
+
+        $(document).ready(function () {
+            $('#convert2_button').on('click', function(){
+                $('#result').html(JSON.stringify(makeJson(1)));
+            });
+
+            $('#convert_button').on('click', function(){
+
+
+                try {
+                    json_arr = JSON.parse($('#Textarea1').val());
+                } catch(e) {
+                    alert(e);
+                    return;
+                }
+
+                $('#table_container').html(makeTable(json_arr));
+                $('.json_table').addClass('table table-bordered table-striped table-hover table-sm');
+                $('.json_table thead').addClass('thead-dark');
+
+            });
+
+        });
+
+   
+    </script>
+
+
+</body>
+
+</html>

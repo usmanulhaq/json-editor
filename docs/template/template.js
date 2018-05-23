@@ -16,9 +16,21 @@ function loadNav()
 }
 function loadContent(page)
 {
-    $.get('../data/' + page, function(data) {
-        $('#my_content').replaceWith($(data).html());
-    });
+    //$.get('../data/' + page, function(data) {
+    //    $('#my_content').replaceWith($(data).html());
+    //});
+
+    $.ajax({
+        url: '../data/' + page,
+        cache: false,
+        success: function(data){
+            $('#my_content').replaceWith($(data).html());
+        },
+        error: function(e){
+            console.log('Error loading content', e);
+        }
+        
+      });
 }
 function loadFooter()
 {

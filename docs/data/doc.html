@@ -2,22 +2,24 @@
 <h1>How to use</h1>
 <h2>Requirements</h2>
 <ol>
-    <li>Jquery</li>
-    <li>Some table styling css</li>
-    <li>json_to_table.js file</li>
-    <li>some sample data</li>
-    <li>A file to link this all togather and show the result</li>
+    <li>Include Jquery</li>
+    <li>Some table styling css, an example is already present in demo pages</li>
+    <li>jsontotable.js file</li>
+    <li>your json data</li>
+    <li>An html file to link this all together and show the result</li>
 </ol>
-<h2>json input asumptions</h2>
+<h2>json input assumptions</h2>
 <p>
-    The input requirement of the fucntion is an array of javascript objects. i.e in a format like below</p>
+    The input requirement of the function is an array of javascript objects. i.e in a format like below</p>
     <code>
         [{&#39;key1&#39;:&#39;value1_A&#39;, &#39;key2&#39;:&#39;value2_A&#39;},{&#39;key1&#39;:&#39;value1_B&#39;, &#39;key2&#39;:&#39;value2_B&#39; },{&#39;key1&#39;:&#39;value1_C&#39;, &#39;key2&#39;:&#39;value2_C&#39; }]</p>
     </code>
-
-    the value can be an of type string, number and an object as well, if it is object another table will be created inside the parent table cell.</p>
-<p>
-    the keys can be different in all objethe keys can be different in all objects. if a new key is detected, a new column will be created in the table.</p>
+    <p>
+    the value can be an of type string, number and an object as well, if it is object another table will be created inside the parent table cell.
+    </p>
+    <p>
+    The keys can be different in all objects. if a new key is detected, a new column will be created in the table.
+    </p>
 
     <h2>Simple example code</h2>
 <pre>
@@ -46,8 +48,94 @@
     &lt;/html&gt;
     </code>
 </pre> 
-<h2>Code Description</h2>
-<h2>Variables:</h2>
+<hr>
+<h2>How to set CSS styles for the table</h2>
+On default following ids / attributes / classes  are set on the created table, you can use these to set the styling of the table or you can use your own javascript or by changing the code to add any other classes to add more diversity to the styling. an example is given at the end that how to use javascript to add some bootstrap 4 styling classes using javascript. 
+<p>
+        <table class="table table-bordered table-striped table-hover" id="info_table">
+        <thead>
+            <tr>
+                <th>Info Type</th>
+                <th>Info Name</th>
+                <th>Info Value</th>
+                <th>table</th>
+                <th>thead</th>
+                <th>tbody</th>
+                <th>tr</th>
+                <th>th</th>
+                <th>td</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Attribute</td>
+                <td>counter-id</td>
+                <td>set to a counter that keeps on increasing on every new created table</td>
+                <td>YES</td>
+                <td>YES</td>
+                <td>YES</td>
+                <td>YES</td>
+                <td>NO</td>
+                <td>NO</td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td>class</td>
+                <td>json_table</td>
+                <td>YES</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>id</td>
+                <td>All ids of the parent table elements will have a counter value of 1 (as in this example) and all the elements of any nested tables will have the next counter value</td>
+                <td>json_table_1</td>
+                <td>json_table_header_1</td>
+                <td>json_table_body_1</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+            </tr>
+            <tr>
+                <td>Attribute</td>
+                <td>td_attr</td>
+                <td>set at only td, its value is = "value" if the table cell contains a single value, "obj": if the cell contains a single line table and "array": if it contains multiline table</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>NO</td>
+                <td>YES</td>
+            </tr>
+        </tbody>
+    </table>
+</p>
+<h3>Using javascript to add bootstrap 4 classes to created table</h3>
+
+<pre>
+    <code>
+    &lt;script&gt;
+        $(document).ready(function () {
+            $('#json_to_table_btn').on('click', function(){
+                json_arr = JSON.parse($('#Textarea1').val());
+                $('#table_container').html(makeTable(json_arr));
+                $('.json_table').addClass('table table-bordered table-striped table-hover table-sm');
+                $('.json_table thead').addClass('thead-dark');
+            });
+        });
+    &lt;/script&gt;
+    </code>
+</pre>
+
+<hr>
+<h2>jsontotable.js functions description</h2>
+
+<h3>Make Table Function</h3>
+<h4>Main Variables:</h4>
 <p>
     <strong>json_array: </strong> Array of objects, each object contains a combination of keys and values. We shall create an html table with values as data and keys as headers of the table.
 </p>
@@ -55,9 +143,15 @@
     <strong>header_names: </strong> An array of objects having headers as keys and the place/index of their columns in the table as value.
 </p>
 <p>
-    <strong>html_table:</strong> A string that we shall build, it will create an html of the final table we are creating.
+    <strong>html_table:</strong> it stores an html string for the final table that is going to be created .
 </p>
-<h2>Code logic</h2>
+<p>
+    <strong>counter and local_counter:</strong> These variables store an id for the created tables, the counter keeps on incrementing for nested tables.
+</p>
+<p>
+    <strong>td_attr:</strong> This stores an attribute indicating the td contents that whether the td contains a value, an object or an array.
+</p>
+<h4>Code logic</h4>
 <pre>
     <code>
     for each object in array 
@@ -75,4 +169,48 @@
     finalize the table string and return it. 
     </code>
 </pre>
+
+<h3>Insert Column Function</h3>
+<h4>Code logic</h4>
+<pre>
+    <code>
+        check if any row exists in the table
+        if not
+            make a header block and insert a new header and set its name
+            make a body block create a new row and set the row value.
+        if yes
+    </code>
+</pre>
+
+<h3>Make Json Function</h3>
+<h4>Main Variables:</h4>
+<p>
+    <strong>header: </strong> An array of columns header in the table.
+</p>
+<p>
+    <strong>counter:</strong> It stores id of the tables, the parent table has an id of 1 and the child tables have ids equal to 2, 3, 4... and so on.
+</p>
+<p>
+    <strong>data:</strong> This stores the final json array.
+</p>
+
+<h4>Code logic</h4>
+<pre>
+    <code>
+    Initialize the header array with all the column names of the table.
+        for each row in the table. 
+            for each cell in the row.
+                check each cell for the value of td_attr attribute
+                if it is set as simple value
+                    create a json object with key as column name and value as the cell value
+                if it is set as a nested table
+                    create a json object; set its value as create a new json array of the nested table using recursive call and column name as the key of the object.
+                end if
+            end foreach
+            push the json object into data array.
+        end foreach            
+    return data array
+    </code>
+</pre>
+
 </div>

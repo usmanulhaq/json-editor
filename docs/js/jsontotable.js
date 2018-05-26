@@ -4,38 +4,42 @@ function makeTable(obj_for_table, counter = 1){
     var i= 0;
     var header_names = {};
     var local_counter = counter;
+    var td_attr;
 
     $.each(obj_for_table, function(level1_k, level1_v){
         $.each(level1_v, function(k, v){
             //console.log('Second Level: ' , key, value);
             if(jQuery.type(v) == 'object'){
+                
                 value = makeTable( JSON.parse(  "[" + JSON.stringify(v) + "]" ), counter+1 );
                 counter++;
+                td_attr = 'obj';
             }
             else if(jQuery.type(v) == 'array'){
                 value = makeTable( v, counter+1 );
                 counter++;
+                td_attr = 'array';
             }
             else
             {
-                value = v;
+                value = "<div contenteditable=true>" + v + "</div>";
+                td_attr = 'value';
             }
             //console.log(v,jQuery.type(v));
 
             if(typeof(header_names[k]) == "undefined" ){
                 header_names[k] = i;
                 insertColumn(table_html, k, local_counter);
-                $(table_html).find('tr').last().find('td').eq(header_names[k]).html(value);
                 i++;
             }
-            else
-            {
-                $(table_html).find('tr').last().find('td').eq(header_names[k]).html(value);
-            }   
+
+            var cell = $(table_html).find('tr').last().find('td').eq(header_names[k]);
+            $(cell).attr('td_attr',td_attr);
+            $(cell).html(value);  
 
         });
 
-            td_list = '<td></td>'.repeat(i);
+            td_list = '<td><div contenteditable=true></div></td>'.repeat(i);
             $(table_html).append( `<tr counter-id = ${local_counter}>' ${td_list} '</tr>`);
     });
 
@@ -50,14 +54,14 @@ function insertColumn(table_ref, header_name, counter) {
 
     if( !$(table_ref).find('tr').first().length ){
         var thead = `<thead  counter-id = ${counter} id = "json_table_header_${counter}"><tr counter-id = ${counter}><th> ${header_name} </th></tr></thead>`;
-        var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td></td></tr></tbody>`
+        var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td><div contenteditable=true></div></td></tr></tbody>`
         $(table_ref).append(thead);
         $(table_ref).append(tbody);
     }
     else
     {
         $(table_ref).find('tr').each(function(){
-            $(this).append('<td></td>');
+            $(this).append('<td><div contenteditable=true></div></td>');
         })
     }
     var inserted_td = $(table_ref).find('tr').first().find('td').last();
@@ -81,37 +85,36 @@ function makeJson(counter=1){
     $(row_finder).each(function(row_i, row_v){
 
         var obj = {};
-        console.log('Outer loop id, value: ', row_i, row_v);
+        //console.log('Outer loop id, value: ', row_i, row_v);
 
         $(header).each(function(header_i, header_value){
 
             var cell = $(row_v).children('td').eq(header_i);
-            var inner_html = $(cell).html();
-            var inner_text = $(cell).text();
+            var td_attr = $(cell).attr('td_attr');
+            var inner_text = $(cell).children('div').text();
             var inner_table = $(cell).find('table');
 
-            console.log('header: ', header, counter);
-            console.log('inner_html value, counter: ', inner_html, counter);
-            console.log('Inner loop id, value: ', header_i, header_value);
+            switch(td_attr){
+                case 'value':
+                obj[header_value] = inner_text;
+                break;
 
+                case 'obj':
+                case 'array':
+                obj[header_value] = makeJson( $(inner_table).attr('counter-id') );
+                break;
 
-            if(inner_text != '' && inner_text != null){
-                if(inner_html == inner_text){
-                    obj[header_value] = inner_html;
-                }
-                else{
-                    //console.log('inner_table log: ', $(inner_table).text());
-                    if($(inner_table).length != 0){
-                        
-                        obj[header_value] = makeJson( $(inner_table).attr('counter-id') );
-                        console.log('recursive func return with: ', obj[header_value]);
-                    }
-                    else{
-                        obj[header_value] = "object1234";
-                    }
-                }
+                case null:
+                case '':
+                case undefined:
                 
+                break;
+
+                default:
+                obj[header_value] = "unknown value";
+                break;
             }
+            //console.log('value of td_attr: ', td_attr);
             
         });
         //console.log('data value: ', data);

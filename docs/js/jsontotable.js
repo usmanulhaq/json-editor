@@ -45,6 +45,12 @@ function makeTable(obj_for_table, counter = 1){
 
     $(table_html).find('tr').last().remove();
     
+    $(table_html).find('td').each(function(td_i,td_v){
+        if($(td_v).attr('td_attr') == undefined){
+            $(td_v).attr('td_attr','value');
+        }
+    });
+    
     return table_html;
 
 }   

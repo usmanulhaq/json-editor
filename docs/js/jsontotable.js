@@ -84,7 +84,7 @@ function makeJson(counter=1){
 
     
     $('#json_table_header_'+ counter + ' th').each(function(i, v){
-        header[i] = $(this).text();
+        header[i] = $(this).text().trim();
     });
     //console.log('header: ', header, counter);
     var row_finder = `#json_table_body_${counter} tr[counter-id=${counter}]`;
@@ -97,7 +97,7 @@ function makeJson(counter=1){
 
             var cell = $(row_v).children('td').eq(header_i);
             var td_attr = $(cell).attr('td_attr');
-            var inner_text = $(cell).children('div').text();
+            var inner_text = $(cell).children('div').text().trim();
             var inner_table = $(cell).find('table');
 
             switch(td_attr){

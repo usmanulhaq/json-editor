@@ -19,3 +19,5 @@ body {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+[contenteditable] { min-height: 1em}

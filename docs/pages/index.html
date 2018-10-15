@@ -1,0 +1,90 @@
+<html lang="en">
+    
+    <head>
+
+        <title>Home</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+        <link href="../css/styles.css" rel="stylesheet">
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+                <span class="navbar-brand" >JSON Editor</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a id='link_home' class="nav-link" href="?page=home">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item active">
+                                <a id='link_examples' class="nav-link" href="?page=examples">Examples <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item active">
+                                <a id='link_demo' class="nav-link" href="?page=demo">Demo <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item active">
+                                <a id='link_download' class="nav-link" href="?page=download">Download <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item active">
+                                <a id='link_about' class="nav-link" href="?page=about">About <span class="sr-only">(current)</span></a>
+                            </li>
+            
+                        </ul>
+                        
+                    </div>
+                </nav>
+
+        <main role="main" class="container">
+            <div class="content">
+                <div id ="my_content"></div>
+            </div>
+        </main>
+
+        <footer class="blog-footer">
+            <p class="text-right"> Based on a <a href = "https://github.com/usmanulhaq/github-project-template">Bootstrap Template</a> by <a href = "mailto:uuhaqpk@yahoo.com">Usman ul haq</a></p>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> 
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+        
+        <script src="../js/jsontotable.js"></script>
+
+
+        <script>
+        $(document).ready(function(){
+            var url = new URL(window.location.href);
+            var content_page_name = url.searchParams.get("page");
+            if(content_page_name == null || content_page_name == "") content_page_name = "home";
+            content_page_name += ".html"; 
+
+            loadContent(content_page_name);
+        });
+
+        function loadContent(page)
+        {
+            $.ajax({
+                url: '../data/' + page,
+                cache: false,
+                success: function(data){
+                    $('#my_content').replaceWith($(data).html());
+                },
+                error: function(e){
+                    $('#my_content').replaceWith("<h3>URL not correct</h3>");
+                }
+            });
+        }
+
+        </script>
+
+    </body>
+</html>

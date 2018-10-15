@@ -1,5 +1,5 @@
 <div>
-<h2>These are some simple javascript functions to convert a json array to an editable html table and then back to jason array</h2>
+<h2>JSON Editor is a collection of jquery functions to convert a json array to an editable html table and then back to jason array</h2>
 <p>
     json array should be in a below format</p>
 <code>
@@ -7,41 +7,38 @@
 </code>
 <p>
     This is an array of javascript object and each object is a list of key &amp; value pairs</p>
-<h2>Some feature of the code</h2>
+<h2>Some features of the code</h2>
 <ul>
-    <li>You can have many different types of keys in each object and can have diferent types of values as well. </li>
-    <li>A value can be a single or an array of objects as well. In this case the created table will have a child table in place of value.</li>
+    <li>In a key value pair; the value can be a single string/number or can be an object or array of objects as well. In this case the created table will have a child table in place of value.</li>
+    <li>In the editor you can insert new values, columns, rows, tables and delete the existing ones</li>
+    <li>The output JSON is simplified in such a way that if a key doest not contain a value, it is removed from the resultant JSON</li>
+    <li>The editor interface is created to be very user friendly, one can just right click and performs the operations</li>
 </ul>
 <h2>How to use</h2>
-<h3>From json to table</h3>
 <p>
     After including the javascript file in you code just call the below function</p>
 <p>
 <code>
-    makeTable(obj_for_table);
+    jsonEditorInit(table_container_id, json_input_container_id, json_output_container_id, json_to_table_btn_id, table_to_json_btn_id);
 </code>
-</p>
-    obj_for_table is a variable containing the array of abjects.</p>
-<p>
-    It will return a string having the html of the table, you can display it as below in your page</p>
-<p>
-<code>
-    $('#table_container').html(makeTable(json_arr));
-</code>
+<ul>
+    <li>
+        table_container_id: id of the container where the editor will be created
+    </li>
+    <li>
+        json_input_container_id: id of the input element from where the json array is to be taken
+    </li>
+    <li>
+        json_output_container_id: id of the output container where the output json is to be shown
+    </li>
+    <li>
+        json_to_table_btn_id: id of the button which will be used to initiate the json to table call.
+    </li>
+    <li>
+        table_to_json_btn_id: id of the button which will be used to initiate the table to json call.
+    </li>
+</ul>
 </p>
 
-<h3>From table to json</h3>
-<p>
-    you cna just call the below function without any argument it will detect the created table in first step and will convert it back to json array</p>
-<p>
-<code>
-    makeJson();
-</code>
-    It will return a json object, you can display it as below in your page</p>
-<p>
-<code>
-    $('#result_container').html(JSON.stringify(makeJson()));
-</code>
-</p>
 
 </div>

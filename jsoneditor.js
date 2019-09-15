@@ -182,7 +182,7 @@ function addTable(){
 }
 
 
-
+//Function takes a json object as input containing the string to be converted to the table and returns the converted string formatted as an html table.
 function makeTable(obj_for_table, counter = 1){
 
     var table_html = jQuery.parseHTML( `<table class = "json_table" counter-id = ${counter} id = "json_table_${counter}"></table>` );
@@ -244,7 +244,7 @@ function makeTable(obj_for_table, counter = 1){
 
 }   
 
-
+//If the code finds any new column in JSON string, the below function will be used to insert the column in the table
 function insertColumn(table_ref, header_name, counter) {
 
     if( !$(table_ref).find('tr[counter-id="' + counter + '"]').first().length ){

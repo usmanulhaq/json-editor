@@ -188,7 +188,7 @@ function addTable(){
 }
 
 
-
+//Function takes a json object as input containing the string to be converted to the table and returns the converted string formatted as an html table.
 function makeTable(obj_for_table, counter = 1){
 
     var table_html = jQuery.parseHTML( `<table class = "json_table" counter-id = ${counter} id = "json_table_${counter}"></table>` );
@@ -226,7 +226,9 @@ function makeTable(obj_for_table, counter = 1){
                 i++;
             }
 
+
             var cell = $(table_html).find("tr[counter-id = " + local_counter + "]").last().find("td[counter-id = " + local_counter + "]").eq(header_names[k]);
+
             $(cell).attr('td_attr',td_attr);
             $(cell).attr('counter-id',local_counter);  //counter id at cell level
             $(cell).html(value);  
@@ -250,11 +252,13 @@ function makeTable(obj_for_table, counter = 1){
 
 }   
 
-
+//If the code finds any new column in JSON string, the below function will be used to insert the column in the table
 function insertColumn(table_ref, header_name, counter) {
 
+
     if( !$(table_ref).find("tr[counter-id = " + counter + "]").first().length ){
-        //var thead = `<thead  counter-id = ${counter} id = "json_table_header_${counter}"><tr counter-id = ${counter}><th><div contenteditable=true> ${header_name} </div></th></tr></thead>`;
+
+      //var thead = `<thead  counter-id = ${counter} id = "json_table_header_${counter}"><tr counter-id = ${counter}><th><div contenteditable=true> ${header_name} </div></th></tr></thead>`;
         //var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td><div contenteditable=true></div></td></tr></tbody>`;
         var thead = `<thead  counter-id = ${counter} id = "json_table_header_${counter}"><tr counter-id = ${counter}><th counter-id = ${counter} > <div contenteditable=true> ${header_name} </div> </th></tr></thead>`; //counter id at cell level
         var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td counter-id = ${counter} ><div contenteditable=true></div></td></tr></tbody>` //counter id at cell level
@@ -267,11 +271,12 @@ function insertColumn(table_ref, header_name, counter) {
     else
     {
         $(table_ref).find("tr[counter-id = " + counter + "]").each(function(){
+
             //$(this).append('<td><div contenteditable=true></div></td>');
             $(this).append(`<td counter-id = ${counter} ><div contenteditable=true></div></td>`); //counter id at cell level
         })
     }
-    var inserted_td = $(table_ref).find('tr').first().find('td').last();
+    var inserted_td = $(table_ref).find('tr[counter-id="' + counter + '"]').first().find('td[counter-id="' + counter + '"]').last();
 
     $(inserted_td).html(header_name);
     //$(inserted_td).replaceWith('<th>' + $(inserted_td).html() + '</th>');

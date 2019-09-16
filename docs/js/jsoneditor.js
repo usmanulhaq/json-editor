@@ -12,7 +12,7 @@ var gbl_json_to_table_btn_id;
 var gbl_table_to_json_btn_id;
 
 
-var max_counter
+var max_counter = 0
 
 var obj_clicked_row = {};
 var obj_clicked_col = {};
@@ -26,13 +26,19 @@ function jsonEditorInit(table_container_id, json_input_container_id, json_output
     gbl_table_to_json_btn_id  =table_to_json_btn_id;
 
     $('#' + table_to_json_btn_id).on('click', function(){
+        if ( $('#' + json_output_container_id ).is( "input" ) ) {	
+            $('#' + json_output_container_id ).val(JSON.stringify(makeJson()));
+        }
+        else{
         $('#' + json_output_container_id ).html(JSON.stringify(makeJson()));
+        }
     });
 
     $('#' + json_to_table_btn_id).on('click', function(){
 
         try {
-            json_arr = JSON.parse($('#' + json_input_container_id).val());
+            var value = $('#' + json_input_container_id).val().trim();
+            json_arr = JSON.parse(value != "" ? value : "[{\" \":\" \"}]");
         } catch(e) {
             alert(e);
             return;

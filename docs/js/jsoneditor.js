@@ -1,4 +1,3 @@
-
 var counter_id;
 
 var parent_clicked_row;
@@ -307,6 +306,8 @@ function makeJson(counter=1){
                 case 'value':
                     if(inner_text != "" && inner_text != null )
                         obj[header_value] = inner_text;
+                    //else                              //Uncomment it if the null values to be treated as blanks (while converting the table to json)
+                    //    obj[header_value] = '';  
                 break;
 
                 case 'obj':
@@ -317,7 +318,7 @@ function makeJson(counter=1){
                 case null:
                 case '':
                 case undefined:
-                
+
                 break;
 
                 default:

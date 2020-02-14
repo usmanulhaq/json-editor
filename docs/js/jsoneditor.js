@@ -10,6 +10,8 @@ var gbl_json_output_container_id;
 var gbl_json_to_table_btn_id;
 var gbl_table_to_json_btn_id;
 
+var copied_row;
+var copied_column;
 
 var max_counter = 0
 
@@ -83,42 +85,59 @@ $(function() {
                     $(this).find(`th[counter-id=${counter_id}]`).eq(clicked_col).before(new_th);
                     $(this).find(`td[counter-id=${counter_id}]`).eq(clicked_col).before(new_td);
                 });
-            break;
+                break;
 
             case 'deleteC':
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).each(function(){
                     $(this).find(`th[counter-id=${counter_id}]`).eq(clicked_col).remove();
                     $(this).find(`td[counter-id=${counter_id}]`).eq(clicked_col).remove();
                 });
-            break;
+                break;
 
             case 'insertRD':
                 td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
                 new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).after(new_tr);
-            break;
+                break;
 
             case 'insertRU':
-            td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
-            new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
-            $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).before(new_tr);
-            break;
+                td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
+                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
+                $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).before(new_tr);
+                break;
 
             case 'deleteR':
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).remove();
-            break;
+                break;
 
             case 'deleteT':
                 $(`#json_table_${counter_id}`).remove();
                 cell = $(`#json_table_${parent_counter_id} tr[counter-id=${parent_counter_id}]`).eq(parent_clicked_row+1).find(`td[counter-id=${parent_counter_id}]`).eq(parent_clicked_col)
                 $(cell).html('<div contenteditable="true"></div>');
                 $(cell).attr('td_attr','value');
+                break;
 
-            break;
+            case 'copyRow':
+                copied_row = $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).clone();
+                break;
+
+            case 'pasteRow':
+                var inner_tables = $(copied_row).find('td table');
+                var inner_table_count = $(inner_tables).length;
+                var  i = 0;
+                for(i=0;i<inner_table_count; i++){
+                    var t = inner_tables[i].outerHTML;
+                    updated_table = update_table_id(t, max_counter++);
+                    $(inner_tables[i].parentNode).html(updated_table);
+                }
+                //use $().each(function(){}); here
+
+                $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).after(copied_row[0].outerHTML);
+                break;
 
             case 'addT':
                 addTable();
-            break;
+                break;
         }  
 
         },
@@ -133,6 +152,9 @@ $(function() {
             "sep2": "---------",
             "addT": {name: "Add a new table in this cell", icon: "fas fa-plus"},
             "deleteT": {name: "Delete parent table of selected cell", icon: "fas fa-trash-alt"},
+            "sep3": "---------",
+            "copyRow": {name: "Copy current row", icon: "fas fa-arrows-alt-h"},
+            "pasteRow": {name: "Insert copied row", icon: "fas fa-arrows-alt-h"},
         }
     });
 
@@ -154,6 +176,30 @@ $(function() {
     
 });
 
+function update_table_id(table_string, max_counter){
+
+    var pos1, pos2;
+    var id;
+    var new_table_string;
+
+    pos1 = table_string.indexOf('counter-id="');
+    pos2 = table_string.indexOf('id="json_table');
+
+    id_string = table_string.substring(pos1, pos2-1)
+
+    pos1 = id_string.indexOf('"');
+    pos2 = id_string.lastIndexOf('"');
+
+    id = id_string.substring(pos1+1,pos2)
+
+    new_table_string = table_string.replace(new RegExp(id_string, 'g'), `counter-id="${max_counter+1}"`)
+    new_table_string = new_table_string.replace(new RegExp('"json_table_header_' + id + '"', 'g'), `"json_table_header_${max_counter+1}"`)
+    new_table_string = new_table_string.replace(new RegExp('"json_table_body_' + id + '"', 'g'), `"json_table_body_${max_counter+1}"`)
+    new_table_string = new_table_string.replace(new RegExp('"json_table_' + id + '"', 'g'), `"json_table_${max_counter+1}"`)
+
+    return new_table_string;
+
+}
 
 function addTable(){
 

@@ -19,7 +19,7 @@ var obj_clicked_row = {};
 var obj_clicked_col = {};
 
 function jsonEditorInit(table_container_id, json_input_container_id, json_output_container_id, json_to_table_btn_id, table_to_json_btn_id) {
-    
+
     gbl_table_container_id = table_container_id;
     gbl_json_input_container_id = json_input_container_id;
     gbl_json_output_container_id = json_output_container_id;
@@ -27,7 +27,7 @@ function jsonEditorInit(table_container_id, json_input_container_id, json_output
     gbl_table_to_json_btn_id  =table_to_json_btn_id;
 
     $('#' + table_to_json_btn_id).on('click', function(){
-        if ( $('#' + json_output_container_id ).is( "input" ) ) {	
+        if ( $('#' + json_output_container_id ).is( "input" ) ) {
             $('#' + json_output_container_id ).val(JSON.stringify(makeJson()));
         }
         else{
@@ -54,21 +54,21 @@ function jsonEditorInit(table_container_id, json_input_container_id, json_output
 
 $(function() {
     $.contextMenu({
-        selector: '#json_table_1', 
+        selector: '#json_table_1',
         callback: function(key, options) {
 
             clicked_col = obj_clicked_col[counter_id];
             clicked_row = obj_clicked_row[counter_id];
 
-        switch(key){   
+        switch(key){
 
             case 'insertCR':
 
                 var col_heading = prompt("Enter the heading of the new column");
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).each(function(){
-                    
+
                     new_th = `<th counter-id=${counter_id}><div contenteditable=true>`+ col_heading +'</div></th>'
-                    new_td = `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`; 
+                    new_td = `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`;
 
                     $(this).find(`th[counter-id=${counter_id}]`).eq(clicked_col).after(new_th);
                     $(this).find(`td[counter-id=${counter_id}]`).eq(clicked_col).after(new_td);
@@ -80,7 +80,7 @@ $(function() {
                 var col_heading = prompt("Enter the heading of the new column");
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).each(function(){
                     new_th = `<th counter-id=${counter_id}><div contenteditable=true>`+ col_heading +'</div></th>'
-                    new_td = `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`; 
+                    new_td = `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`;
 
                     $(this).find(`th[counter-id=${counter_id}]`).eq(clicked_col).before(new_th);
                     $(this).find(`td[counter-id=${counter_id}]`).eq(clicked_col).before(new_td);
@@ -96,13 +96,13 @@ $(function() {
 
             case 'insertRD':
                 td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
-                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
+                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).after(new_tr);
                 break;
 
             case 'insertRU':
                 td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
-                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
+                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;
                 $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).before(new_tr);
                 break;
 
@@ -138,7 +138,7 @@ $(function() {
             case 'addT':
                 addTable();
                 break;
-        }  
+        }
 
         },
         items: {
@@ -166,14 +166,14 @@ $(function() {
             obj_clicked_row[current_counter_id] = $(this).closest('tr').index();
 
             console.log('target:', e.target);
-            
+
             console.log('Col: ' + obj_clicked_col[current_counter_id]);
             console.log('Row: ' + obj_clicked_row[current_counter_id]);
             console.log('Counter id: '+counter_id);
             console.log("table depth: " + $(this).parents('table').length);
 
-    }); 
-    
+    });
+
 });
 
 function update_table_id(table_string, max_counter){
@@ -207,7 +207,7 @@ function addTable(){
     clicked_row = obj_clicked_row[counter_id];
 
     max_counter++;
-    
+
     table_template =`<table class = "json_table" counter-id="${max_counter}" id="json_table_${max_counter}">
                         <thead counter-id="${max_counter}" id="json_table_header_${max_counter}">
                             <tr counter-id="${max_counter}">
@@ -246,17 +246,24 @@ function makeTable(obj_for_table, counter = 1){
         $.each(level1_v, function(k, v){
             //console.log('Second Level: ' , key, value);
             if(jQuery.type(v) == 'object'){
-                
+
                 value = makeTable( JSON.parse(  "[" + JSON.stringify(v) + "]" ), counter+1 );
                 counter++;
                 max_counter = counter;
                 td_attr = 'obj';
             }
             else if(jQuery.type(v) == 'array'){
+              // check if the array element is of object type
+              if(v.length>0 && jQuery.type(v[0]) == 'object'){
                 value = makeTable( v, counter+1 );
                 counter++;
                 max_counter = counter;
                 td_attr = 'array';
+              }
+              else {
+                value = "<div contenteditable=true>" + v + "</div>";
+                td_attr = 'value';
+              }
             }
             else
             {
@@ -274,7 +281,7 @@ function makeTable(obj_for_table, counter = 1){
             var cell = $(table_html).find('tr[counter-id="' + local_counter + '"]').last().find('td[counter-id="' + local_counter + '"]').eq(header_names[k]);
             $(cell).attr('td_attr',td_attr);
             $(cell).attr('counter-id',local_counter);  //counter id at cell level
-            $(cell).html(value);  
+            $(cell).html(value);
 
         });
 
@@ -284,16 +291,16 @@ function makeTable(obj_for_table, counter = 1){
     });
 
     $(table_html).find('tr').last().remove();
-    
+
     $(table_html).find('td').each(function(td_i,td_v){
         if($(td_v).attr('td_attr') == undefined){
             $(td_v).attr('td_attr','value');
         }
     });
-    
+
     return table_html;
 
-}   
+}
 
 //If the code finds any new column in JSON string, the below function will be used to insert the column in the table
 function insertColumn(table_ref, header_name, counter) {
@@ -303,8 +310,8 @@ function insertColumn(table_ref, header_name, counter) {
         //var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td><div contenteditable=true></div></td></tr></tbody>`;
         var thead = `<thead  counter-id = ${counter} id = "json_table_header_${counter}"><tr counter-id = ${counter}><th counter-id = ${counter} > <div contenteditable=true> ${header_name} </div> </th></tr></thead>`; //counter id at cell level
         var tbody = `<tbody  counter-id = ${counter} id = "json_table_body_${counter}"><tr counter-id = ${counter}><td counter-id = ${counter} ><div contenteditable=true></div></td></tr></tbody>` //counter id at cell level
-        
-        
+
+
         $(table_ref).append(thead);
         $(table_ref).append(tbody);
     }
@@ -330,7 +337,7 @@ function makeJson(counter=1){
     var header = [];
     var data = [];
 
-    
+
     $('#json_table_header_'+ counter + ' th').each(function(i, v){
         header[i] = $(this).text().trim();
     });
@@ -353,7 +360,7 @@ function makeJson(counter=1){
                     if(inner_text != "" && inner_text != null )
                         obj[header_value] = inner_text;
                     //else                              //Uncomment it if the null values to be treated as blanks (while converting the table to json)
-                    //    obj[header_value] = '';  
+                    //    obj[header_value] = '';
                 break;
 
                 case 'obj':
@@ -372,7 +379,7 @@ function makeJson(counter=1){
                 break;
             }
             //console.log('value of td_attr: ', td_attr);
-            
+
         });
         //console.log('data value: ', data);
         data.push(obj);
@@ -381,4 +388,3 @@ function makeJson(counter=1){
     //return JSON.stringify(data);
     return data;
 }
-
